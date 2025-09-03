@@ -1,0 +1,28 @@
+{
+    "version": "0.2",
+    "ignorePaths": [
+        ".venv**/**",
+        ".vscode/**",
+        "venv",
+        ".gitignore"
+    ],
+    "dictionaryDefinitions": [],
+    "dictionaries": [
+        "en-US",
+        "de-DE"
+    ],
+    "words": [
+        "allclose",
+        "Arraylike",
+        "astype",
+        "atleast",
+        "biuf",
+        "biufc",
+        "dtype",
+        "iufc",
+        "ndarray",
+        "ndim",
+        "rtol",
+        "venv"
+    ]
+}
