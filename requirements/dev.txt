@@ -6,6 +6,7 @@ jupyter
 line-profiler
 matplotlib
 mypy>=1.11.0
+pandas>=2.0
 perfplot
 pycodestyle>=2.12.0
 pyright[nodejs]>=1.1.300
