@@ -2,7 +2,7 @@
 
 from pathlib import Path as __Path
 
-from ._scalars import (  # noqa: F401
+from .scalars import (  # noqa: F401
     Integer,
     RealNumeric,
     convert_to_validated_float,

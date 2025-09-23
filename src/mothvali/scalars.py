@@ -1,5 +1,5 @@
 """
-:mod:`_scalars`
+:mod:`scalars`
 
 This module provides input validations for scalar data.
 

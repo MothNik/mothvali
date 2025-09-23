@@ -1,5 +1,5 @@
 """
-This test suite implements all tests for the module :mod:`mothvali._scalars`.
+This test suite implements all tests for the module :mod:`mothvali.scalars`.
 
 """
 
@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from mothvali._scalars import (  # get_validated_real_numeric_1d_array_like,
+from mothvali.scalars import (  # get_validated_real_numeric_1d_array_like,
     convert_to_validated_float,
     convert_to_validated_integer,
 )
