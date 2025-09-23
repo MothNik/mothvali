@@ -1,7 +1,23 @@
+# === Inputs ===
+
+py ?= 3.11
+workers ?= auto
+
 # === Constants ===
 
 # the source directories which are being checked
 SRC_DIRS = ./src ./tests
+VENV = .venv
+
+### Platform specific Python commands and locations ###
+
+venv = $(VENV)$(subst .,,$(py))
+ifeq ($(OS),Windows_NT)
+	PYTHON=$(CURDIR)/$(venv)/Scripts/python
+else
+	PYTHON=$(CURDIR)/$(venv)/bin/python
+endif
+
 
 # === Package and Dependencies ===
 
@@ -9,23 +25,23 @@ SRC_DIRS = ./src ./tests
 .PHONY: upgrade-pip
 upgrade-pip:
 	@echo Upgrading pip, setuptools, and wheel ...
-	python -m pip install --upgrade pip setuptools wheel
+	@$(PYTHON) -m pip install --upgrade pip setuptools wheel
 
 # Installing the required dependencies and building the package
 .PHONY: install
 install: upgrade-pip
 	@echo Installing the required dependencies and building the package ...
-	python -m pip install --upgrade .
+	@$(PYTHON) -m pip install --upgrade .
 
 .PHONY: install.dev
 install.dev: upgrade-pip
 	@echo Installing the required dependencies and building the package for development ...
-	python -m pip install --upgrade ."[dev]"
+	@$(PYTHON) -m pip install --upgrade ."[dev]"
 
 .PHONY: install.git_ci
 install.git_ci: upgrade-pip
 	@echo Installing the required dependencies for CI ...
-	python -m pip install --upgrade ."[git_ci]"
+	@$(PYTHON) -m pip install --upgrade ."[git_ci]"
 
 # === Source File Checks ===
 
@@ -75,25 +91,25 @@ check: check.black check.isort check.pyright check.mypy check.pycodestyle check.
 .PHONY: test
 test:
 	@echo Running specific test with pytest ...
-	pytest -k "$(TEST)" -x
+	@$(PYTHON) -m pytest -k "$(TEST)" -x
 
 # Running a selected test (parallel)
 .PHONY: test-parallel
 test-parallel:
 	@echo Running specific test with pytest in parallel ...
-	pytest -k "$(TEST)" -n="auto" -x
+	@$(PYTHON) -m pytest -k "$(TEST)" -n="auto" -x
 
 .PHONY: tests.runtime
 tests.runtime:
 	@echo Running the tests with pytest ...
-	pytest ./tests -x
+	@$(PYTHON) -m pytest ./tests -x
 
 .PHONY: tests.htmlcov
 tests.htmlcov:
 	@echo Running the tests with HTML coverage report ...
-	pytest --cov=pyscopee ./tests --cov-report=html -x --no-jit
+	@$(PYTHON) -m pytest --cov=mothvali ./tests --cov-report=html -x
 
 .PHONY: tests.xmlcov
 tests.xmlcov:
 	@echo Running the tests with XML coverage report ...
-	pytest --cov=pyscopee ./tests --cov-report=xml -x --no-jit
+	@$(PYTHON) -m pytest --cov=mothvali ./tests --cov-report=xml -x
