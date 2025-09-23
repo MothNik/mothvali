@@ -8,6 +8,8 @@ This module provides input validations for scalar data.
 # === Setup ===
 
 __all__ = [
+    "Integer",
+    "RealNumeric",
     "convert_to_validated_integer",
     "convert_to_validated_float",
     "isinstance_incl_none",
@@ -24,6 +26,8 @@ import numpy as np
 # === Types ===
 
 _ValueType = TypeVar("_ValueType", int, float)
+Integer = Union[int, np.integer]
+RealNumeric = Union[int, float, np.integer, np.floating]
 
 # === Models ===
 

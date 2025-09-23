@@ -2,13 +2,21 @@
 
 from pathlib import Path as __Path
 
+from ._scalars import (  # noqa: F401
+    Integer,
+    RealNumeric,
+    convert_to_validated_float,
+    convert_to_validated_integer,
+    isinstance_incl_none,
+)
+
 # === Package Metadata ===
 
 # the author and version are read using relative file locations
 __current_file_directory = __Path(__file__).resolve().parent
 
-with open(__current_file_directory / "AUTHORS.txt", "r") as author_file:
-    __author__ = author_file.read().strip()
-
 with open(__current_file_directory / "VERSION.txt", "r") as version_file:
     __version__ = version_file.read().strip()
+
+with open(__current_file_directory / "AUTHORS.txt", "r") as author_file:
+    __author__ = author_file.read().strip()
