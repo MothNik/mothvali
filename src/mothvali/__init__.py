@@ -2,6 +2,12 @@
 
 from pathlib import Path as __Path
 
+from ._arrays import (  # noqa: F401
+    RealNumericArrayLike,
+    convert_to_validated_numeric_nd_array_like,
+    convert_to_validated_real_numeric_1d_array_like,
+    convert_to_validated_real_numeric_2d_array_like,
+)
 from .scalars import (  # noqa: F401
     Integer,
     RealNumeric,
