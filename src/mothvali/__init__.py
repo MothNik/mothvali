@@ -11,8 +11,8 @@ from ._arrays import (  # noqa: F401
 from .scalars import (  # noqa: F401
     Integer,
     RealNumeric,
-    convert_to_validated_float,
-    convert_to_validated_integer,
+    convert_to_validated_python_float,
+    convert_to_validated_python_integer,
     isinstance_incl_none,
 )
 

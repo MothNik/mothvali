@@ -10,8 +10,8 @@ This module provides input validations for scalar data.
 __all__ = [
     "Integer",
     "RealNumeric",
-    "convert_to_validated_integer",
-    "convert_to_validated_float",
+    "convert_to_validated_python_integer",
+    "convert_to_validated_python_float",
     "isinstance_incl_none",
 ]
 
@@ -58,14 +58,15 @@ _BOUND_COMPARISON_ASSIGNMENT: Dict[
 # === Auxiliary Functions ===
 
 
-def _convert_to_validated_type(
+def _convert_to_validated_python_scalar_type(
     value: Any,
     name: str,
     output_type: Type[_ValueType],
     allowed_from_types: Tuple[Type, ...],
 ) -> _ValueType:
     """
-    Converts a value to a specific type and checks if it is one of the allowed types.
+    Converts a value to a specific Python scalar type and checks if it is one of the
+    allowed types.
 
     Parameters
     ----------
@@ -74,7 +75,7 @@ def _convert_to_validated_type(
     name : :obj:`str`
         The name of the value used for error messages.
     output_type : type
-        The type to convert the value to.
+        The Python type to convert the value to, i.e., :class:`float` or :class:`int`.
         It should not be part of ``allowed_from_types``.
     allowed_from_types : (type, ...)
         The allowed types for the value from which it can be converted.
@@ -168,7 +169,7 @@ def _convert_to_bound_validated_value(
 
     # if clipping is enabled and the bound is exclusive, an error is raised
     if clip and not bound_inclusive:
-        raise ValueError(f"Cannot clip '{name}' to an exclusive bound. ")
+        raise ValueError(f"Cannot clip '{name}' to an exclusive bound.")
 
     # if no bound is provided, the function returns without doing anything
     if bound is None:
@@ -194,7 +195,7 @@ def _convert_to_bound_validated_value(
     )
 
 
-def _convert_to_validated_scalar(
+def _convert_to_validated_python_scalar(
     value: Any,
     name: str,
     output_type: Type[_ValueType],
@@ -206,8 +207,8 @@ def _convert_to_validated_scalar(
     clip: bool,
 ) -> _ValueType:
     """
-    Validates a scalar value by converting it to a specific type and checking if it is
-    within a specific range.
+    Validates a scalar value by converting it to a specific Python type and checking if
+    it is within a specific range.
 
     Parameters
     ----------
@@ -216,7 +217,7 @@ def _convert_to_validated_scalar(
     name : :obj:`str`
         The name of the value used for error messages.
     output_type : type
-        The type to convert the value to.
+        The Python type to convert the value to, i.e., :class:`float` or :class:`int`.
         It should not be part of ``allowed_from_types``.
     allowed_from_types : (type, ...)
         The allowed types for the value from which it can be converted.
@@ -250,7 +251,7 @@ def _convert_to_validated_scalar(
 
     # first, the value is converted to the output type and checked to be one of the
     # allowed types
-    value = _convert_to_validated_type(
+    value = _convert_to_validated_python_scalar_type(
         value=value,
         name=name,
         output_type=output_type,
@@ -324,7 +325,7 @@ def isinstance_incl_none(
     return isinstance(value, types)  # type: ignore
 
 
-def convert_to_validated_integer(
+def convert_to_validated_python_integer(
     value: Any,
     name: str,
     min_value: Optional[int] = None,
@@ -334,7 +335,7 @@ def convert_to_validated_integer(
     clip: bool = False,
 ) -> int:
     """
-    Checks and converts a value to a validated integer.
+    Checks and converts a value to a validated Python integer (:class:`int`).
 
     Parameters
     ----------
@@ -356,7 +357,7 @@ def convert_to_validated_integer(
     Returns
     -------
     checked_value : :obj:`int`
-        The checked value as an integer.
+        The checked value as a Python integer.
 
     Raises
     ------
@@ -367,7 +368,7 @@ def convert_to_validated_integer(
 
     """
 
-    return _convert_to_validated_scalar(
+    return _convert_to_validated_python_scalar(
         value=value,
         name=name,
         output_type=int,
@@ -380,7 +381,7 @@ def convert_to_validated_integer(
     )
 
 
-def convert_to_validated_float(
+def convert_to_validated_python_float(
     value: Any,
     name: str,
     min_value: Optional[float] = None,
@@ -390,7 +391,7 @@ def convert_to_validated_float(
     clip: bool = False,
 ) -> float:
     """
-    Checks and converts a value to a validated float.
+    Checks and converts a value to a validated Python float (:class:`float`).
 
     Parameters
     ----------
@@ -412,7 +413,7 @@ def convert_to_validated_float(
     Returns
     -------
     checked_value : :obj:`float`
-        The checked value as a float.
+        The checked value as a Python float.
 
     Raises
     ------
@@ -423,7 +424,7 @@ def convert_to_validated_float(
 
     """
 
-    return _convert_to_validated_scalar(
+    return _convert_to_validated_python_scalar(
         value=value,
         name=name,
         output_type=float,
