@@ -36,7 +36,7 @@ install: upgrade-pip
 .PHONY: install.dev
 install.dev: upgrade-pip
 	@echo Installing the required dependencies and building the package for development ...
-	@$(PYTHON) -m pip install --upgrade ."[dev]"
+	@$(PYTHON) -m pip install --upgrade --editable ."[dev]"
 
 .PHONY: install.git_ci
 install.git_ci: upgrade-pip
@@ -91,7 +91,7 @@ check: check.black check.isort check.pyright check.mypy check.pycodestyle check.
 .PHONY: test
 test:
 	@echo Running specific test with pytest ...
-	@$(PYTHON) -m pytest -k "$(TEST)" -x
+	@$(PYTHON) -m pytest -k "$(TEST)"  -x
 
 # Running a selected test (parallel)
 .PHONY: test-parallel
