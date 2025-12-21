@@ -1,5 +1,5 @@
 """
-This test suite implements all tests for the module :mod:`mothvali.arrays`.
+This test suite implements all tests for the module :mod:`mothvali.numpy_arrays`.
 
 """
 
