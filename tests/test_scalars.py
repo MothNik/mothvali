@@ -63,8 +63,7 @@ class ScalarTestCaseSpecs(NamedTuple):
             max_value=None,
             clip=False,
             expected=TypeError(
-                "Expected 'value' to be of type 'int' / 'numpy.integer', but got "
-                "'float'."
+                "Expected 'value' to be of type 'int', but got 'float'."
             ),
         ),
         ScalarTestCaseSpecs(
@@ -320,8 +319,7 @@ class ScalarTestCaseSpecs(NamedTuple):
             max_value=None,
             clip=False,
             expected=TypeError(
-                "Expected 'value' to be of type 'int' / 'numpy.integer', but got "
-                "'float'."
+                "Expected 'value' to be of type 'int', but got 'float'."
             ),
         ),
         ScalarTestCaseSpecs(
@@ -333,8 +331,7 @@ class ScalarTestCaseSpecs(NamedTuple):
             max_value=2,
             clip=False,
             expected=TypeError(
-                "Expected 'value' to be of type 'int' / 'numpy.integer', but got "
-                "'float'."
+                "Expected 'value' to be of type 'int', but got 'float'."
             ),
         ),
         ScalarTestCaseSpecs(
@@ -344,8 +341,7 @@ class ScalarTestCaseSpecs(NamedTuple):
             max_value=2,
             clip=False,
             expected=TypeError(
-                "Expected 'value' to be of type 'int' / 'numpy.integer', but got "
-                "'float'."
+                "Expected 'value' to be of type 'int', but got 'float'."
             ),
         ),
         ScalarTestCaseSpecs(
@@ -355,8 +351,7 @@ class ScalarTestCaseSpecs(NamedTuple):
             max_value=0,
             clip=False,
             expected=TypeError(
-                "Expected 'value' to be of type 'int' / 'numpy.integer', but got "
-                "'float'."
+                "Expected 'value' to be of type 'int', but got 'float'."
             ),
         ),
     ],
@@ -444,8 +439,7 @@ def test_integer_validation(
             None,
             False,
             TypeError(
-                "Expected 'value' to be of type 'float' / 'numpy.floating' / 'int' / "
-                "'numpy.integer', but got 'complex'."
+                "Expected 'value' to be of type 'float' / 'int', but got 'complex'."
             ),
         ),
         (  # 5) a Python float with a minimum constraint that is satisfied
@@ -802,8 +796,7 @@ def test_integer_validation(
             None,
             False,
             TypeError(
-                "Expected 'value' to be of type 'float' / 'numpy.floating' / 'int' / "
-                "'numpy.integer', but got 'complex'."
+                "Expected 'value' to be of type 'float' / 'int', but got 'complex'."
             ),
         ),
         (  # 54) a complex value with a maximum constraint that is satisfied
@@ -812,8 +805,7 @@ def test_integer_validation(
             2.0,
             False,
             TypeError(
-                "Expected 'value' to be of type 'float' / 'numpy.floating' / 'int' / "
-                "'numpy.integer', but got 'complex'."
+                "Expected 'value' to be of type 'float' / 'int', but got 'complex'."
             ),
         ),
         (  # 55) a complex value with both constraints that are satisfied
@@ -822,8 +814,7 @@ def test_integer_validation(
             2.0,
             False,
             TypeError(
-                "Expected 'value' to be of type 'float' / 'numpy.floating' / 'int' / "
-                "'numpy.integer', but got 'complex'."
+                "Expected 'value' to be of type 'float' / 'int', but got 'complex'."
             ),
         ),
         (  # 56) a complex value with flipped constraints
@@ -832,8 +823,7 @@ def test_integer_validation(
             0.0,
             False,
             TypeError(
-                "Expected 'value' to be of type 'float' / 'numpy.floating' / 'int' / "
-                "'numpy.integer', but got 'complex'."
+                "Expected 'value' to be of type 'float' / 'int', but got 'complex'."
             ),
         ),
     ],

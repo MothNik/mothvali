@@ -58,6 +58,28 @@ _BOUND_COMPARISON_ASSIGNMENT: Dict[
 # === Auxiliary Functions ===
 
 
+def _unpack_numpy_scalars(value: Any, name: str) -> Any:
+    """
+    Returns the Python scalar corresponding to a NumPy scalar (``float32``, ``int64``,
+    etc.) or a NumPy 0D-Array.
+    For any other input type, the value is returned as is.
+
+    """
+
+    if not isinstance(value, (np.ndarray, np.generic)):
+        return value
+
+    if isinstance(value, np.ndarray) and (value.size, value.ndim) != (1, 0):
+        size = value.size
+        ndim = value.ndim
+        raise ValueError(
+            f"\nExpected NumPy-Array inputs for '{name}' to be 0-dimensional with a "
+            f"single element, but found '{name}.{size = }' and '{name}.{ndim = }'."
+        )
+
+    return value.item()
+
+
 def _convert_to_validated_python_scalar_type(
     value: Any,
     name: str,
@@ -99,15 +121,19 @@ def _convert_to_validated_python_scalar_type(
         return value
 
     # otherwise, if it is one of the allowed types, it is converted to the output type
-    if isinstance(value, allowed_from_types):
+    if allowed_from_types and isinstance(value, allowed_from_types):
         return output_type(value)
 
     # if the value is neither of the output type nor one of the allowed types, an error
     # is raised
     # NOTE: the following slices [7:-1] # removes the "<class '" and "'>" parts
     allowed_types_names = f"{output_type}"[7:-1]
-    allowed_types_names += " / "
-    allowed_types_names += " / ".join([f"{aft}"[7:-1] for aft in allowed_from_types])
+    if allowed_from_types:
+        allowed_types_names += " / "
+        allowed_types_names += " / ".join(
+            [f"{aft}"[7:-1] for aft in allowed_from_types]
+        )
+
     value_type = f"{type(value)}"[7:-1]
     raise TypeError(
         f"Expected '{name}' to be of type {allowed_types_names}, but got {value_type}."
@@ -251,6 +277,7 @@ def _convert_to_validated_python_scalar(
 
     # first, the value is converted to the output type and checked to be one of the
     # allowed types
+    value = _unpack_numpy_scalars(value=value, name=name)
     value = _convert_to_validated_python_scalar_type(
         value=value,
         name=name,
@@ -372,7 +399,7 @@ def convert_to_validated_python_integer(
         value=value,
         name=name,
         output_type=int,
-        allowed_from_types=(np.integer,),
+        allowed_from_types=tuple(),
         min_value=min_value,
         min_inclusive=min_inclusive,
         max_value=max_value,
@@ -428,11 +455,7 @@ def convert_to_validated_python_float(
         value=value,
         name=name,
         output_type=float,
-        allowed_from_types=(
-            np.floating,
-            int,
-            np.integer,
-        ),
+        allowed_from_types=(int,),
         min_value=min_value,
         min_inclusive=min_inclusive,
         max_value=max_value,
