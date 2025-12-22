@@ -9,8 +9,8 @@ from .numpy_arrays import (  # noqa: F401
     convert_to_validated_real_numeric_2d_array_like,
 )
 from .scalars import (  # noqa: F401
+    Float,
     Integer,
-    RealNumeric,
     convert_to_validated_python_float,
     convert_to_validated_python_integer,
     isinstance_incl_none,

@@ -9,7 +9,7 @@ This module provides input validations for scalar data.
 
 __all__ = [
     "Integer",
-    "RealNumeric",
+    "Float",
     "convert_to_validated_python_integer",
     "convert_to_validated_python_float",
     "isinstance_incl_none",
@@ -26,8 +26,8 @@ import numpy as np
 # === Types ===
 
 _ValueType = TypeVar("_ValueType", int, float)
-Integer = Union[int, np.integer]
-RealNumeric = Union[int, float, np.integer, np.floating]
+Integer = Union[int, np.integer, np.ndarray]
+Float = Union[int, float, np.integer, np.floating, np.ndarray]
 
 # === Models ===
 
@@ -56,6 +56,32 @@ _BOUND_COMPARISON_ASSIGNMENT: Dict[
 }
 
 # === Auxiliary Functions ===
+
+
+def parse_scalar_to_string(value: Union[float, int]) -> str:
+    """
+    Parses :obj:`float`s to :obj:`str`s and considers the representation, i.e.,
+
+    - ``0.0`` is parsed as ``"0.0"``.
+    - all values with ``1e-5 <= abs(value) <= 1e5`` are represented with 5 decimals
+        ``f"{value:.5f}"``.
+    - all other values are represented in 5-digit exponential notation
+        ``f"{value:.5e}"``.
+
+    :obj:`int`s will be parsed as they are without any special considerations.
+
+    """
+
+    if isinstance(value, int):
+        return str(value)
+
+    if 1e-5 <= abs(value) <= 1e5:
+        return f"{value:.5f}"
+
+    if value == 0.0:
+        return "0.0"
+
+    return f"{value:.5e}"
 
 
 def _unpack_numpy_scalars(value: Any, name: str) -> Any:
@@ -216,8 +242,10 @@ def _convert_to_bound_validated_value(
     if clip:
         return clipper(value, bound)
 
+    value_str = parse_scalar_to_string(value=value)
+    bound_str = parse_scalar_to_string(value=bound)
     raise ValueError(
-        f"Expected '{name}' to be {comparison_str} {bound}, but got {value}."
+        f"Expected '{name}' to be {comparison_str} {bound_str}, but got {value_str}."
     )
 
 
@@ -289,9 +317,11 @@ def _convert_to_validated_python_scalar(
     # maximum bound
     if min_value is not None and max_value is not None:
         if min_value > max_value:
+            min_value_str = parse_scalar_to_string(value=min_value)
+            max_value_str = parse_scalar_to_string(value=max_value)
             raise ValueError(
                 f"Expected minimum value for '{name}' to be <= maximum value, but got "
-                f"min = {min_value} and max = {max_value}."
+                f"'min_value = {min_value_str}' and 'max_value = {max_value_str}'."
             )
 
     # afterwards, the value is checked to be within the allowed range and clipped if
@@ -355,9 +385,9 @@ def isinstance_incl_none(
 def convert_to_validated_python_integer(
     value: Any,
     name: str,
-    min_value: Optional[int] = None,
+    min_value: Optional[Integer] = None,
     min_inclusive: bool = True,
-    max_value: Optional[int] = None,
+    max_value: Optional[Integer] = None,
     max_inclusive: bool = True,
     clip: bool = False,
 ) -> int:
@@ -395,6 +425,32 @@ def convert_to_validated_python_integer(
 
     """
 
+    if min_value is not None:
+        min_value = _convert_to_validated_python_scalar(
+            value=min_value,
+            name=f"{name}.min_value",
+            output_type=int,
+            allowed_from_types=tuple(),
+            min_value=None,
+            min_inclusive=False,
+            max_value=None,
+            max_inclusive=False,
+            clip=False,
+        )
+
+    if max_value is not None:
+        max_value = _convert_to_validated_python_scalar(
+            value=max_value,
+            name=f"{name}.max_value",
+            output_type=int,
+            allowed_from_types=tuple(),
+            min_value=None,
+            min_inclusive=False,
+            max_value=None,
+            max_inclusive=False,
+            clip=False,
+        )
+
     return _convert_to_validated_python_scalar(
         value=value,
         name=name,
@@ -411,9 +467,9 @@ def convert_to_validated_python_integer(
 def convert_to_validated_python_float(
     value: Any,
     name: str,
-    min_value: Optional[float] = None,
+    min_value: Optional[Float] = None,
     min_inclusive: bool = True,
-    max_value: Optional[float] = None,
+    max_value: Optional[Float] = None,
     max_inclusive: bool = True,
     clip: bool = False,
 ) -> float:
@@ -450,6 +506,32 @@ def convert_to_validated_python_float(
         If ``value`` is not within the allowed range and ``clip`` is ``False``.
 
     """
+
+    if min_value is not None:
+        min_value = _convert_to_validated_python_scalar(
+            value=min_value,
+            name=f"{name}.min_value",
+            output_type=float,
+            allowed_from_types=(int,),
+            min_value=None,
+            min_inclusive=False,
+            max_value=None,
+            max_inclusive=False,
+            clip=False,
+        )
+
+    if max_value is not None:
+        max_value = _convert_to_validated_python_scalar(
+            value=max_value,
+            name=f"{name}.max_value",
+            output_type=float,
+            allowed_from_types=(int,),
+            min_value=None,
+            min_inclusive=False,
+            max_value=None,
+            max_inclusive=False,
+            clip=False,
+        )
 
     return _convert_to_validated_python_scalar(
         value=value,

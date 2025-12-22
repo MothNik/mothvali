@@ -186,7 +186,7 @@ class ScalarTestCaseSpecs(NamedTuple):
             clip=False,
             expected=ValueError(
                 "Expected minimum value for 'value' to be <= maximum value, but got "
-                "min = 2 and max = 0."
+                "'min_value = 2' and 'max_value = 0'."
             ),
         ),
         ScalarTestCaseSpecs(
@@ -307,7 +307,7 @@ class ScalarTestCaseSpecs(NamedTuple):
             clip=False,
             expected=ValueError(
                 "Expected minimum value for 'value' to be <= maximum value, but got "
-                "min = 2 and max = 0."
+                "'min_value = 2' and 'max_value = 0'."
             ),
         ),
         ScalarTestCaseSpecs(
@@ -461,7 +461,7 @@ def test_integer_validation(
             2.0,
             None,
             False,
-            ValueError("Expected 'value' to be >= 2.0, but got 1.0."),
+            ValueError("Expected 'value' to be >= 2.00000, but got 1.00000."),
         ),
         (  # 8) a Python integer with a minimum constraint that is satisfied
             1,
@@ -482,7 +482,7 @@ def test_integer_validation(
             2.0,
             None,
             False,
-            ValueError("Expected 'value' to be >= 2.0, but got 1."),
+            ValueError("Expected 'value' to be >= 2.00000, but got 1.00000"),
         ),
         (  # 11) a Python float with a maximum constraint that is satisfied
             1.0,
@@ -503,7 +503,7 @@ def test_integer_validation(
             None,
             2.0,
             False,
-            ValueError("Expected 'value' to be <= 2.0, but got 3.0."),
+            ValueError("Expected 'value' to be <= 2.00000, but got 3.00000."),
         ),
         (  # 14) a Python integer with a maximum constraint that is satisfied
             1,
@@ -524,7 +524,7 @@ def test_integer_validation(
             None,
             2.0,
             False,
-            ValueError("Expected 'value' to be <= 2.0, but got 3."),
+            ValueError("Expected 'value' to be <= 2.00000, but got 3.00000."),
         ),
         (  # 17) a Python float with both constraints that are satisfied
             1.0,
@@ -552,14 +552,14 @@ def test_integer_validation(
             1.0,
             2.0,
             False,
-            ValueError("Expected 'value' to be >= 1.0, but got 0.0."),
+            ValueError("Expected 'value' to be >= 1.00000, but got 0.0."),
         ),
         (  # 21) a Python float with both constraints that lead to an exception
             3.0,
             0.0,
             2.0,
             False,
-            ValueError("Expected 'value' to be <= 2.0, but got 3.0."),
+            ValueError("Expected 'value' to be <= 2.00000, but got 3.00000."),
         ),
         (  # 22) a Python integer with both constraints that are satisfied
             1,
@@ -587,14 +587,14 @@ def test_integer_validation(
             1.0,
             2.0,
             False,
-            ValueError("Expected 'value' to be >= 1.0, but got 0."),
+            ValueError("Expected 'value' to be >= 1.00000, but got 0.0."),
         ),
         (  # 26) a Python integer with both constraints that lead to an exception
             3,
             0.0,
             2.0,
             False,
-            ValueError("Expected 'value' to be <= 2.0, but got 3."),
+            ValueError("Expected 'value' to be <= 2.00000, but got 3.00000."),
         ),
         (  # 27) a Python float with flipped constraints
             1.0,
@@ -603,7 +603,7 @@ def test_integer_validation(
             False,
             ValueError(
                 "Expected minimum value for 'value' to be <= maximum value, but got "
-                "min = 2.0 and max = 0.0."
+                "'min_value = 2.00000' and 'max_value = 0.0'."
             ),
         ),
         (  # 28) a Python integer with flipped constraints
@@ -613,7 +613,7 @@ def test_integer_validation(
             False,
             ValueError(
                 "Expected minimum value for 'value' to be <= maximum value, but got "
-                "min = 2.0 and max = 0.0."
+                "'min_value = 2.00000' and 'max_value = 0.0'."
             ),
         ),
         (  # 29) a NumPy float with a minimum constraint that is satisfied
@@ -635,7 +635,7 @@ def test_integer_validation(
             2.0,
             None,
             False,
-            ValueError("Expected 'value' to be >= 2.0, but got 1.0."),
+            ValueError("Expected 'value' to be >= 2.00000, but got 1.00000."),
         ),
         (  # 32) a NumPy float with a maximum constraint that is satisfied
             np.float64(1.0),
@@ -656,7 +656,7 @@ def test_integer_validation(
             None,
             2.0,
             False,
-            ValueError("Expected 'value' to be <= 2.0, but got 3.0."),
+            ValueError("Expected 'value' to be <= 2.00000, but got 3.00000."),
         ),
         (  # 35) a NumPy float with both constraints that are satisfied
             np.float64(1.0),
@@ -684,14 +684,14 @@ def test_integer_validation(
             1.0,
             2.0,
             False,
-            ValueError("Expected 'value' to be >= 1.0, but got 0.0."),
+            ValueError("Expected 'value' to be >= 1.00000, but got 0.0."),
         ),
         (  # 39) a NumPy float with both constraints that lead to an exception
             np.float64(3.0),
             0.0,
             2.0,
             False,
-            ValueError("Expected 'value' to be <= 2.0, but got 3.0."),
+            ValueError("Expected 'value' to be <= 2.00000, but got 3.00000."),
         ),
         (  # 40) a NumPy float with flipped constraints
             np.float64(1.0),
@@ -700,7 +700,7 @@ def test_integer_validation(
             False,
             ValueError(
                 "Expected minimum value for 'value' to be <= maximum value, but got "
-                "min = 2.0 and max = 0.0."
+                "'min_value = 2.00000' and 'max_value = 0.0'."
             ),
         ),
         (  # 41) a NumPy integer with a minimum constraint that is satisfied
@@ -722,7 +722,7 @@ def test_integer_validation(
             2,
             None,
             False,
-            ValueError("Expected 'value' to be >= 2, but got 1."),
+            ValueError("Expected 'value' to be >= 2.00000, but got 1.00000."),
         ),
         (  # 44) a NumPy integer with a maximum constraint that is satisfied
             np.int64(1),
@@ -743,7 +743,7 @@ def test_integer_validation(
             None,
             2,
             False,
-            ValueError("Expected 'value' to be <= 2, but got 3."),
+            ValueError("Expected 'value' to be <= 2.00000, but got 3.00000."),
         ),
         (  # 47) a NumPy integer with both constraints that are satisfied
             np.int64(1),
@@ -771,14 +771,14 @@ def test_integer_validation(
             1,
             2,
             False,
-            ValueError("Expected 'value' to be >= 1, but got 0."),
+            ValueError("Expected 'value' to be >= 1.00000, but got 0.0."),
         ),
         (  # 51) a NumPy integer with both constraints that lead to an exception
             np.int64(3),
             0,
             2,
             False,
-            ValueError("Expected 'value' to be <= 2, but got 3."),
+            ValueError("Expected 'value' to be <= 2.00000, but got 3.00000."),
         ),
         (  # 52) a NumPy integer with flipped constraints
             np.int64(1),
@@ -787,7 +787,7 @@ def test_integer_validation(
             False,
             ValueError(
                 "Expected minimum value for 'value' to be <= maximum value, but got "
-                "min = 2 and max = 0."
+                "'min_value = 2.00000' and 'max_value = 0.0'."
             ),
         ),
         (  # 53) a complex value with a minimum constraint that is satisfied
